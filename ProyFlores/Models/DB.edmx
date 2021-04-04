@@ -1,0 +1,555 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="proyectofloresModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="finca">
+          <Key>
+            <PropertyRef Name="idfinca" />
+          </Key>
+          <Property Name="idfinca" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombrefinca" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ubicacion" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="invernadero">
+          <Key>
+            <PropertyRef Name="idinvernadero" />
+          </Key>
+          <Property Name="idinvernadero" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idfinca" Type="int" Nullable="false" />
+          <Property Name="numeroinvernadero" Type="int" />
+        </EntityType>
+        <EntityType Name="planillafertirriego">
+          <Key>
+            <PropertyRef Name="idplanillaferi" />
+          </Key>
+          <Property Name="idplanillaferi" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="tiporiego" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="fechariego" Type="date" Nullable="false" />
+          <Property Name="floresconplaga" Type="int" Nullable="false" />
+          <Property Name="tipoplaga" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="idbloque" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="planillaproduccion">
+          <Key>
+            <PropertyRef Name="idplanillaprodu" />
+          </Key>
+          <Property Name="idplanillaprodu" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="tipoflor" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="fechasiembra" Type="datetime" Nullable="false" />
+          <Property Name="fechaterminación" Type="datetime" Nullable="false" />
+          <Property Name="numerofloresaprobadas" Type="int" Nullable="false" />
+          <Property Name="nfloresnoaprobadas" Type="int" Nullable="false" />
+          <Property Name="cedula" Type="int" Nullable="false" />
+          <Property Name="invernadero" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="probloque">
+          <Key>
+            <PropertyRef Name="idbloque" />
+          </Key>
+          <Property Name="idbloque" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="numerobloque" Type="int" Nullable="false" />
+          <Property Name="presupuestadoaño" Type="float" Nullable="false" />
+          <Property Name="llevamosaño" Type="float" Nullable="false" />
+          <Property Name="diferenciaaño" Type="float" Nullable="false" />
+          <Property Name="presupuestadomes" Type="float" Nullable="false" />
+          <Property Name="llevamosmes" Type="float" Nullable="false" />
+          <Property Name="diferenciames" Type="float" Nullable="false" />
+          <Property Name="cedula" Type="int" Nullable="false" />
+          <Property Name="idinvernadero" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tipousuario">
+          <Key>
+            <PropertyRef Name="idtipousuario" />
+          </Key>
+          <Property Name="idtipousuario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="tipousuario" Type="nvarchar" MaxLength="15" Nullable="false" />
+        </EntityType>
+        <EntityType Name="usuario">
+          <Key>
+            <PropertyRef Name="cedula" />
+          </Key>
+          <Property Name="cedula" Type="int" Nullable="false" />
+          <Property Name="nombres" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="apellidos" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="idtipousuario" Type="int" Nullable="false" />
+          <Property Name="idfinca" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="fk_cedula">
+          <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
+          <End Role="probloque" Type="Self.probloque" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuario">
+              <PropertyRef Name="cedula" />
+            </Principal>
+            <Dependent Role="probloque">
+              <PropertyRef Name="cedula" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_cedula2">
+          <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
+          <End Role="planillaproduccion" Type="Self.planillaproduccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuario">
+              <PropertyRef Name="cedula" />
+            </Principal>
+            <Dependent Role="planillaproduccion">
+              <PropertyRef Name="cedula" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_idbloque">
+          <End Role="probloque" Type="Self.probloque" Multiplicity="1" />
+          <End Role="planillafertirriego" Type="Self.planillafertirriego" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="probloque">
+              <PropertyRef Name="idbloque" />
+            </Principal>
+            <Dependent Role="planillafertirriego">
+              <PropertyRef Name="idbloque" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_idfinca">
+          <End Role="finca" Type="Self.finca" Multiplicity="1" />
+          <End Role="usuario" Type="Self.usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="finca">
+              <PropertyRef Name="idfinca" />
+            </Principal>
+            <Dependent Role="usuario">
+              <PropertyRef Name="idfinca" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_idfinca2">
+          <End Role="finca" Type="Self.finca" Multiplicity="1" />
+          <End Role="invernadero" Type="Self.invernadero" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="finca">
+              <PropertyRef Name="idfinca" />
+            </Principal>
+            <Dependent Role="invernadero">
+              <PropertyRef Name="idfinca" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_idinvernadero">
+          <End Role="invernadero" Type="Self.invernadero" Multiplicity="1" />
+          <End Role="probloque" Type="Self.probloque" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="invernadero">
+              <PropertyRef Name="idinvernadero" />
+            </Principal>
+            <Dependent Role="probloque">
+              <PropertyRef Name="idinvernadero" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_idinvernadero3">
+          <End Role="invernadero" Type="Self.invernadero" Multiplicity="1" />
+          <End Role="planillaproduccion" Type="Self.planillaproduccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="invernadero">
+              <PropertyRef Name="idinvernadero" />
+            </Principal>
+            <Dependent Role="planillaproduccion">
+              <PropertyRef Name="invernadero" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_idtipousuario">
+          <End Role="tipousuario" Type="Self.tipousuario" Multiplicity="1" />
+          <End Role="usuario" Type="Self.usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tipousuario">
+              <PropertyRef Name="idtipousuario" />
+            </Principal>
+            <Dependent Role="usuario">
+              <PropertyRef Name="idtipousuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="proyectofloresModelStoreContainer">
+          <EntitySet Name="finca" EntityType="Self.finca" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="invernadero" EntityType="Self.invernadero" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="planillafertirriego" EntityType="Self.planillafertirriego" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="planillaproduccion" EntityType="Self.planillaproduccion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="probloque" EntityType="Self.probloque" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tipousuario" EntityType="Self.tipousuario" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="usuario" EntityType="Self.usuario" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="fk_cedula" Association="Self.fk_cedula">
+            <End Role="usuario" EntitySet="usuario" />
+            <End Role="probloque" EntitySet="probloque" />
+          </AssociationSet>
+          <AssociationSet Name="fk_cedula2" Association="Self.fk_cedula2">
+            <End Role="usuario" EntitySet="usuario" />
+            <End Role="planillaproduccion" EntitySet="planillaproduccion" />
+          </AssociationSet>
+          <AssociationSet Name="fk_idbloque" Association="Self.fk_idbloque">
+            <End Role="probloque" EntitySet="probloque" />
+            <End Role="planillafertirriego" EntitySet="planillafertirriego" />
+          </AssociationSet>
+          <AssociationSet Name="fk_idfinca" Association="Self.fk_idfinca">
+            <End Role="finca" EntitySet="finca" />
+            <End Role="usuario" EntitySet="usuario" />
+          </AssociationSet>
+          <AssociationSet Name="fk_idfinca2" Association="Self.fk_idfinca2">
+            <End Role="finca" EntitySet="finca" />
+            <End Role="invernadero" EntitySet="invernadero" />
+          </AssociationSet>
+          <AssociationSet Name="fk_idinvernadero" Association="Self.fk_idinvernadero">
+            <End Role="invernadero" EntitySet="invernadero" />
+            <End Role="probloque" EntitySet="probloque" />
+          </AssociationSet>
+          <AssociationSet Name="fk_idinvernadero3" Association="Self.fk_idinvernadero3">
+            <End Role="invernadero" EntitySet="invernadero" />
+            <End Role="planillaproduccion" EntitySet="planillaproduccion" />
+          </AssociationSet>
+          <AssociationSet Name="fk_idtipousuario" Association="Self.fk_idtipousuario">
+            <End Role="tipousuario" EntitySet="tipousuario" />
+            <End Role="usuario" EntitySet="usuario" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="proyectofloresModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="finca">
+          <Key>
+            <PropertyRef Name="idfinca" />
+          </Key>
+          <Property Name="idfinca" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombrefinca" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ubicacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="usuario" Relationship="Self.fk_idfinca" FromRole="finca" ToRole="usuario" />
+          <NavigationProperty Name="invernadero" Relationship="Self.fk_idfinca2" FromRole="finca" ToRole="invernadero" />
+        </EntityType>
+        <EntityType Name="invernadero">
+          <Key>
+            <PropertyRef Name="idinvernadero" />
+          </Key>
+          <Property Name="idinvernadero" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idfinca" Type="Int32" Nullable="false" />
+          <Property Name="numeroinvernadero" Type="Int32" />
+          <NavigationProperty Name="finca" Relationship="Self.fk_idfinca2" FromRole="invernadero" ToRole="finca" />
+          <NavigationProperty Name="probloque" Relationship="Self.fk_idinvernadero" FromRole="invernadero" ToRole="probloque" />
+          <NavigationProperty Name="planillaproduccion" Relationship="Self.fk_idinvernadero3" FromRole="invernadero" ToRole="planillaproduccion" />
+        </EntityType>
+        <EntityType Name="planillafertirriego">
+          <Key>
+            <PropertyRef Name="idplanillaferi" />
+          </Key>
+          <Property Name="idplanillaferi" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="tiporiego" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="fechariego" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="floresconplaga" Type="Int32" Nullable="false" />
+          <Property Name="tipoplaga" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="idbloque" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="probloque" Relationship="Self.fk_idbloque" FromRole="planillafertirriego" ToRole="probloque" />
+        </EntityType>
+        <EntityType Name="planillaproduccion">
+          <Key>
+            <PropertyRef Name="idplanillaprodu" />
+          </Key>
+          <Property Name="idplanillaprodu" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="tipoflor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="fechasiembra" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="fechaterminación" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="numerofloresaprobadas" Type="Int32" Nullable="false" />
+          <Property Name="nfloresnoaprobadas" Type="Int32" Nullable="false" />
+          <Property Name="cedula" Type="Int32" Nullable="false" />
+          <Property Name="invernadero" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="invernadero1" Relationship="Self.fk_idinvernadero3" FromRole="planillaproduccion" ToRole="invernadero" />
+          <NavigationProperty Name="usuario" Relationship="Self.fk_cedula2" FromRole="planillaproduccion" ToRole="usuario" />
+        </EntityType>
+        <EntityType Name="probloque">
+          <Key>
+            <PropertyRef Name="idbloque" />
+          </Key>
+          <Property Name="idbloque" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="numerobloque" Type="Int32" Nullable="false" />
+          <Property Name="presupuestadoaño" Type="Double" Nullable="false" />
+          <Property Name="llevamosaño" Type="Double" Nullable="false" />
+          <Property Name="diferenciaaño" Type="Double" Nullable="false" />
+          <Property Name="presupuestadomes" Type="Double" Nullable="false" />
+          <Property Name="llevamosmes" Type="Double" Nullable="false" />
+          <Property Name="diferenciames" Type="Double" Nullable="false" />
+          <Property Name="cedula" Type="Int32" Nullable="false" />
+          <Property Name="idinvernadero" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="invernadero" Relationship="Self.fk_idinvernadero" FromRole="probloque" ToRole="invernadero" />
+          <NavigationProperty Name="planillafertirriego" Relationship="Self.fk_idbloque" FromRole="probloque" ToRole="planillafertirriego" />
+          <NavigationProperty Name="usuario" Relationship="Self.fk_cedula" FromRole="probloque" ToRole="usuario" />
+        </EntityType>
+        <EntityType Name="tipousuario">
+          <Key>
+            <PropertyRef Name="idtipousuario" />
+          </Key>
+          <Property Name="idtipousuario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="tipousuario1" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="usuario" Relationship="Self.fk_idtipousuario" FromRole="tipousuario" ToRole="usuario" />
+        </EntityType>
+        <EntityType Name="usuario">
+          <Key>
+            <PropertyRef Name="cedula" />
+          </Key>
+          <Property Name="cedula" Type="Int32" Nullable="false" />
+          <Property Name="nombres" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="apellidos" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="idtipousuario" Type="Int32" Nullable="false" />
+          <Property Name="idfinca" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="finca" Relationship="Self.fk_idfinca" FromRole="usuario" ToRole="finca" />
+          <NavigationProperty Name="planillaproduccion" Relationship="Self.fk_cedula2" FromRole="usuario" ToRole="planillaproduccion" />
+          <NavigationProperty Name="probloque" Relationship="Self.fk_cedula" FromRole="usuario" ToRole="probloque" />
+          <NavigationProperty Name="tipousuario" Relationship="Self.fk_idtipousuario" FromRole="usuario" ToRole="tipousuario" />
+        </EntityType>
+        <Association Name="fk_idfinca">
+          <End Role="finca" Type="Self.finca" Multiplicity="1" />
+          <End Role="usuario" Type="Self.usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="finca">
+              <PropertyRef Name="idfinca" />
+            </Principal>
+            <Dependent Role="usuario">
+              <PropertyRef Name="idfinca" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_idfinca2">
+          <End Role="finca" Type="Self.finca" Multiplicity="1" />
+          <End Role="invernadero" Type="Self.invernadero" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="finca">
+              <PropertyRef Name="idfinca" />
+            </Principal>
+            <Dependent Role="invernadero">
+              <PropertyRef Name="idfinca" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_idinvernadero">
+          <End Role="invernadero" Type="Self.invernadero" Multiplicity="1" />
+          <End Role="probloque" Type="Self.probloque" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="invernadero">
+              <PropertyRef Name="idinvernadero" />
+            </Principal>
+            <Dependent Role="probloque">
+              <PropertyRef Name="idinvernadero" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_idinvernadero3">
+          <End Role="invernadero" Type="Self.invernadero" Multiplicity="1" />
+          <End Role="planillaproduccion" Type="Self.planillaproduccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="invernadero">
+              <PropertyRef Name="idinvernadero" />
+            </Principal>
+            <Dependent Role="planillaproduccion">
+              <PropertyRef Name="invernadero" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_idbloque">
+          <End Role="probloque" Type="Self.probloque" Multiplicity="1" />
+          <End Role="planillafertirriego" Type="Self.planillafertirriego" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="probloque">
+              <PropertyRef Name="idbloque" />
+            </Principal>
+            <Dependent Role="planillafertirriego">
+              <PropertyRef Name="idbloque" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_cedula2">
+          <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
+          <End Role="planillaproduccion" Type="Self.planillaproduccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuario">
+              <PropertyRef Name="cedula" />
+            </Principal>
+            <Dependent Role="planillaproduccion">
+              <PropertyRef Name="cedula" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_cedula">
+          <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
+          <End Role="probloque" Type="Self.probloque" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuario">
+              <PropertyRef Name="cedula" />
+            </Principal>
+            <Dependent Role="probloque">
+              <PropertyRef Name="cedula" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_idtipousuario">
+          <End Role="tipousuario" Type="Self.tipousuario" Multiplicity="1" />
+          <End Role="usuario" Type="Self.usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tipousuario">
+              <PropertyRef Name="idtipousuario" />
+            </Principal>
+            <Dependent Role="usuario">
+              <PropertyRef Name="idtipousuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="proyectofloresEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="finca" EntityType="Self.finca" />
+          <EntitySet Name="invernadero" EntityType="Self.invernadero" />
+          <EntitySet Name="planillafertirriego" EntityType="Self.planillafertirriego" />
+          <EntitySet Name="planillaproduccion" EntityType="Self.planillaproduccion" />
+          <EntitySet Name="probloque" EntityType="Self.probloque" />
+          <EntitySet Name="tipousuario" EntityType="Self.tipousuario" />
+          <EntitySet Name="usuario" EntityType="Self.usuario" />
+          <AssociationSet Name="fk_idfinca" Association="Self.fk_idfinca">
+            <End Role="finca" EntitySet="finca" />
+            <End Role="usuario" EntitySet="usuario" />
+          </AssociationSet>
+          <AssociationSet Name="fk_idfinca2" Association="Self.fk_idfinca2">
+            <End Role="finca" EntitySet="finca" />
+            <End Role="invernadero" EntitySet="invernadero" />
+          </AssociationSet>
+          <AssociationSet Name="fk_idinvernadero" Association="Self.fk_idinvernadero">
+            <End Role="invernadero" EntitySet="invernadero" />
+            <End Role="probloque" EntitySet="probloque" />
+          </AssociationSet>
+          <AssociationSet Name="fk_idinvernadero3" Association="Self.fk_idinvernadero3">
+            <End Role="invernadero" EntitySet="invernadero" />
+            <End Role="planillaproduccion" EntitySet="planillaproduccion" />
+          </AssociationSet>
+          <AssociationSet Name="fk_idbloque" Association="Self.fk_idbloque">
+            <End Role="probloque" EntitySet="probloque" />
+            <End Role="planillafertirriego" EntitySet="planillafertirriego" />
+          </AssociationSet>
+          <AssociationSet Name="fk_cedula2" Association="Self.fk_cedula2">
+            <End Role="usuario" EntitySet="usuario" />
+            <End Role="planillaproduccion" EntitySet="planillaproduccion" />
+          </AssociationSet>
+          <AssociationSet Name="fk_cedula" Association="Self.fk_cedula">
+            <End Role="usuario" EntitySet="usuario" />
+            <End Role="probloque" EntitySet="probloque" />
+          </AssociationSet>
+          <AssociationSet Name="fk_idtipousuario" Association="Self.fk_idtipousuario">
+            <End Role="tipousuario" EntitySet="tipousuario" />
+            <End Role="usuario" EntitySet="usuario" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="proyectofloresModelStoreContainer" CdmEntityContainer="proyectofloresEntities">
+          <EntitySetMapping Name="finca">
+            <EntityTypeMapping TypeName="proyectofloresModel.finca">
+              <MappingFragment StoreEntitySet="finca">
+                <ScalarProperty Name="idfinca" ColumnName="idfinca" />
+                <ScalarProperty Name="nombrefinca" ColumnName="nombrefinca" />
+                <ScalarProperty Name="ubicacion" ColumnName="ubicacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="invernadero">
+            <EntityTypeMapping TypeName="proyectofloresModel.invernadero">
+              <MappingFragment StoreEntitySet="invernadero">
+                <ScalarProperty Name="idinvernadero" ColumnName="idinvernadero" />
+                <ScalarProperty Name="idfinca" ColumnName="idfinca" />
+                <ScalarProperty Name="numeroinvernadero" ColumnName="numeroinvernadero" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="planillafertirriego">
+            <EntityTypeMapping TypeName="proyectofloresModel.planillafertirriego">
+              <MappingFragment StoreEntitySet="planillafertirriego">
+                <ScalarProperty Name="idplanillaferi" ColumnName="idplanillaferi" />
+                <ScalarProperty Name="tiporiego" ColumnName="tiporiego" />
+                <ScalarProperty Name="fechariego" ColumnName="fechariego" />
+                <ScalarProperty Name="floresconplaga" ColumnName="floresconplaga" />
+                <ScalarProperty Name="tipoplaga" ColumnName="tipoplaga" />
+                <ScalarProperty Name="idbloque" ColumnName="idbloque" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="planillaproduccion">
+            <EntityTypeMapping TypeName="proyectofloresModel.planillaproduccion">
+              <MappingFragment StoreEntitySet="planillaproduccion">
+                <ScalarProperty Name="idplanillaprodu" ColumnName="idplanillaprodu" />
+                <ScalarProperty Name="tipoflor" ColumnName="tipoflor" />
+                <ScalarProperty Name="fechasiembra" ColumnName="fechasiembra" />
+                <ScalarProperty Name="fechaterminación" ColumnName="fechaterminación" />
+                <ScalarProperty Name="numerofloresaprobadas" ColumnName="numerofloresaprobadas" />
+                <ScalarProperty Name="nfloresnoaprobadas" ColumnName="nfloresnoaprobadas" />
+                <ScalarProperty Name="cedula" ColumnName="cedula" />
+                <ScalarProperty Name="invernadero" ColumnName="invernadero" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="probloque">
+            <EntityTypeMapping TypeName="proyectofloresModel.probloque">
+              <MappingFragment StoreEntitySet="probloque">
+                <ScalarProperty Name="idbloque" ColumnName="idbloque" />
+                <ScalarProperty Name="numerobloque" ColumnName="numerobloque" />
+                <ScalarProperty Name="presupuestadoaño" ColumnName="presupuestadoaño" />
+                <ScalarProperty Name="llevamosaño" ColumnName="llevamosaño" />
+                <ScalarProperty Name="diferenciaaño" ColumnName="diferenciaaño" />
+                <ScalarProperty Name="presupuestadomes" ColumnName="presupuestadomes" />
+                <ScalarProperty Name="llevamosmes" ColumnName="llevamosmes" />
+                <ScalarProperty Name="diferenciames" ColumnName="diferenciames" />
+                <ScalarProperty Name="cedula" ColumnName="cedula" />
+                <ScalarProperty Name="idinvernadero" ColumnName="idinvernadero" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tipousuario">
+            <EntityTypeMapping TypeName="proyectofloresModel.tipousuario">
+              <MappingFragment StoreEntitySet="tipousuario">
+                <ScalarProperty Name="idtipousuario" ColumnName="idtipousuario" />
+                <ScalarProperty Name="tipousuario1" ColumnName="tipousuario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="usuario">
+            <EntityTypeMapping TypeName="proyectofloresModel.usuario">
+              <MappingFragment StoreEntitySet="usuario">
+                <ScalarProperty Name="cedula" ColumnName="cedula" />
+                <ScalarProperty Name="nombres" ColumnName="nombres" />
+                <ScalarProperty Name="apellidos" ColumnName="apellidos" />
+                <ScalarProperty Name="idtipousuario" ColumnName="idtipousuario" />
+                <ScalarProperty Name="idfinca" ColumnName="idfinca" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

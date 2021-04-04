@@ -1,0 +1,68 @@
+﻿@model ProyFlores.Models.ViewModelsBloque.BloqueViewModel
+@{
+    ViewBag.Title = "Nueva Produccion de Bloque";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm("NuevoProdBloque", "producbloque", FormMethod.Post))
+{
+<div class="row">
+
+    <div class="col-md-12">
+
+        
+            @Html.LabelFor(d => d.Presupuestadoaño)
+            @Html.TextBoxFor(d => d.Presupuestadoaño, "", new { @class = "form-control" })
+        
+        
+            @Html.LabelFor(d => d.Llevamosaño)
+            @Html.TextBoxFor(d => d.Llevamosaño, "", new { @class = "form-control" })
+        
+            @Html.LabelFor(d => d.Diferenciaaño)
+            @Html.TextBoxFor(d => d.Diferenciaaño, "", new { @class = "form-control" })
+        
+
+    </div>
+
+    <div class="col-md-12">
+        <div class="col-md-4">
+            @Html.LabelFor(d => d.Presupuestadomes)
+            @Html.TextBoxFor(d => d.Presupuestadomes, "", new { @class = "form-control" })
+        </div>
+
+        <div class="col-md-4">
+            @Html.LabelFor(d => d.Llevamosmes)
+            @Html.TextBoxFor(d => d.Llevamosmes, "", new { @class = "form-control" })
+        </div>
+
+        <div class="col-md-4">
+            @Html.LabelFor(d => d.Diferenciames)
+            @Html.TextBoxFor(d => d.Diferenciames, "", new { @class = "form-control" })
+        </div>
+
+    </div>
+
+    <div class="col-md-12">
+
+        @Html.LabelFor(d => d.Numerobloque)
+        @Html.TextBoxFor(d => d.Numerobloque, "", new { @class = "form-control" })
+
+        @Html.LabelFor(d => d.Cedula)
+        @Html.TextBoxFor(d => d.Cedula, "", new { @class = "form-control" })
+
+        @Html.LabelFor(d => d.Idinvernadero)
+        @Html.TextBoxFor(d => d.Idinvernadero, "", new { @class = "form-control" })
+
+        <br />
+    </div>
+
+    
+
+    <div style="text-align:right">
+        <input value="Guardar" class="btn btn-primary" type="submit" />
+    </div>
+
+</div>
+}
+

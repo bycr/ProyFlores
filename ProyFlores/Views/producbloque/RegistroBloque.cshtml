@@ -1,0 +1,48 @@
+﻿@model List<ProyFlores.Models.ViewModelsBloque.ListBloqueViewModel>
+@{
+    ViewBag.Title = "Listado Bloques";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@* href direcciona al archivo tabla controllers y al metodo nuevo*@
+<div class="row" style="text-align: right; padding:5px;">
+    <a href="~/producbloque/RegistroBloque" class="btn btn-primary">Nuevo</a>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table">
+            <tr>
+                <th># Bloque</th>
+                <th>ppto año</th>
+                <th>llevamos</th>
+                <th>diferencia</th>
+                <th>ppto mes</th>
+                <th>llevamos</th>
+                <th>diferencia</th>
+                <th>cedula</th>
+                <th></th>
+            </tr>
+            @foreach (var oElemento in Model)
+            {
+                <tr>
+                    <td>@oElemento.Numerobloque</td>
+                    <td>@oElemento.Presupuestadoaño</td>
+                    <td>@oElemento.Llevamosaño</td>
+                    <td>@oElemento.Diferenciaaño</td>
+                    <td>@oElemento.Presupuestadomes</td>
+                    <td>@oElemento.Llevamosmes</td>
+                    <td>@oElemento.Diferenciames</td>
+                    <td>@oElemento.Cedula</td>
+                    <td>
+                        <a class="btn btn-primary" href="~/producbloque/EditarBloque/@oElemento.Idbloque">Editar</a>
+                        <a class="btn btn-danger" href="~/producbloque/EliminarBloque/@oElemento.Idbloque">Eliminar</a>
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+
+</div>
